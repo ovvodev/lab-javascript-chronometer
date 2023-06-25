@@ -3,11 +3,13 @@ class Chronometer {
     // ... your code goes here
     this.currentTime = currentTime;
      this.intervalId = intervalId;
+     this.milliseconds = 0;
+     this.millisecondId = null;
   }
 
   start(callback) {
-    // ... your code goes here
-   this.intervalId = setInterval(() => {
+    
+      this.intervalId = setInterval(() => {
       this.currentTime += 1;
       if ( typeof callback === "function"){
         callback();
@@ -17,15 +19,26 @@ class Chronometer {
 
   getMinutes() {
     // ... your code goes here
-    return Math.floor(this.currentTime / 60);
-
+    if (this.currentTime === 0) {
+      return 0;
+    } else {
+      return Math.floor(this.currentTime / 60);
+    }
   }
 
   getSeconds() {
     // ... your code goes here
     return this.currentTime % 60;
   }
-
+  getMilliseconds(){
+    this.millisecondId = setInterval(() => {
+      this.milliseconds += 1;
+      if(this.milliseconds === 10){
+        clearInterval(this.millisecondId);
+      }
+    }, 1);
+    return this.milliseconds;
+  }
   computeTwoDigitNumber(value) {
     // ... your code goes here
     return ("0" + value).slice(-2);
@@ -34,12 +47,14 @@ class Chronometer {
 
   stop() {
     // ... your code goes here
-    return clearInterval(this.intervalId);
+    clearInterval(this.intervalId);
+    clearInterval(this.millisecondId);
   }
 
   reset() {
     // ... your code goes here
     this.currentTime = 0;
+    this.milliseconds = 0;
     let numbersElems = document.querySelectorAll(".number");
     numbersElems.forEach((element) => {
       element.innerHTML = "0";
@@ -50,7 +65,8 @@ class Chronometer {
     // ... your code goes here
     let minuteSplit = this.computeTwoDigitNumber(this.getMinutes());
     let secondSplit = this.computeTwoDigitNumber(this.getSeconds());
-    return minuteSplit + ":" + secondSplit;
+    let miliSplit = this.computeTwoDigitNumber(this.getMilliseconds());
+    return minuteSplit + ":" + secondSplit + ":" + miliSplit;
   }
 }
 
