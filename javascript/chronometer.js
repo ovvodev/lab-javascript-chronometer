@@ -33,7 +33,7 @@ class Chronometer {
   getMilliseconds(){
     this.millisecondId = setInterval(() => {
       this.milliseconds += 1;
-      if(this.milliseconds === 10){
+      if(this.milliseconds === 99){
         clearInterval(this.millisecondId);
       }
     }, 1);
